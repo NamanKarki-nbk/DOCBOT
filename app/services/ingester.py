@@ -19,10 +19,8 @@ os.makedirs(FAISS_INDEX_DIR, exist_ok=True)
 #Loading embedding model once at startup 
 Embeddings = HuggingFaceEmbeddings(
     model_name = EMBEDDING_MODEL,
-    model_kwargs = {"device": "cuda"},
-    encode_kwargs = {"normalize_embeddings": True,
-                     "batch_size": 64,
-                     "show_progress_bar": True
+    model_kwargs = {"device": "cuda",  "trust_remote_code": True},
+    encode_kwargs = {"normalize_embeddings": True
                      }
 )
 
@@ -59,7 +57,7 @@ def ingest(file_bytes: bytes, document_id: int) -> int:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size = 500,
         chunk_overlap = 50,
-        seperators = ["\n\n", "\n", ".", " ", ""]
+        separators = ["\n\n", "\n", ".", " ", ""]
     )
     
     chunks = splitter.split_documents(pages)

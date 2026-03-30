@@ -7,7 +7,7 @@ from app.services.ingester import ingest, delete_index, get_page_count
 
 
 
-router = APIRouter(prefix="/document", tags=["Documents"])
+router = APIRouter(prefix="/documents", tags=["Documents"])
 
 @router.post("/upload", response_model=DocumentResponse)
 async def upload_document(
@@ -25,7 +25,7 @@ async def upload_document(
         page_count = get_page_count(file_bytes)
     )
     
-    doc.add()
+    db.add(doc)
     db.flush()
     
     try:
