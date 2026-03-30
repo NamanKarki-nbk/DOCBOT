@@ -9,7 +9,7 @@ from app.services.rag import answer_quesiton
 router = APIRouter(prefix="/query", tags= ["Query"])
 
 @router.post("/", response_model=QueryResponse)
-def query_document(payload: QueryRequest, db: Session = get_db):
+def query_document(payload: QueryRequest, db: Session = Depends(get_db)):
     doc = db.query(Document).filter(Document.id == payload.document_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
@@ -33,7 +33,7 @@ def query_document(payload: QueryRequest, db: Session = get_db):
     return result
 
 
-@router.get("/history.{document_id}", response_model=list[QueryLogResponse])
+@router.get("/history/{document_id}", response_model=list[QueryLogResponse])
 def query_history(document_id: int , db: Session = Depends(get_db)):
     return (
         db.query(QueryLog)

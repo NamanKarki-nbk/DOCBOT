@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Document
 from app.schemas import DocumentResponse
-from app.services.ingester import ingest_pdf, delete_index, get_page_count
+from app.services.ingester import ingest, delete_index, get_page_count
 
 
 
@@ -29,7 +29,7 @@ async def upload_document(
     db.flush()
     
     try:
-        chunk_count = ingest_pdf(file_bytes, doc.id)
+        chunk_count = ingest(file_bytes, doc.id)
     except ValueError as e:
         db.rollback()
         raise HTTPException(status_code=422, detail=str(e))

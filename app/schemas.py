@@ -25,7 +25,7 @@ class SourceChunk(BaseModel):
     
 class QueryResponse(BaseModel):
     answer: str
-    source: list[SourceChunk]
+    sources: list[SourceChunk]
     
     
 
